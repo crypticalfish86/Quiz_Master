@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b8ca14dd586ca488f7c2447df19abb, type: 3}
   m_Name: Question (0)
   m_EditorClassIdentifier: 
-  question: Enter new question here
+  question: In what base is the hexidecimal number system in?
+  answers:
+  - 2
+  - 10
+  - 8
+  - 16
+  correctAnswerIndex: 3
