@@ -30,7 +30,10 @@ public class Quiz : MonoBehaviour
 
     }
 
+    //processes answer selection
     public void OnAnswerSelected(int index){
+
+        //if correct answer is clicked, then will inform player its correct, otherwise gives the player the correct answer
         if (index == correctAnswerIndex){
             questionText.text = "Correct!";
             Image buttonImage = answerButtons[index].GetComponent<Image>();
