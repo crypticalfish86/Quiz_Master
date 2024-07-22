@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "Question", fileName = "New Question")]
-public class QuestionTemplate : ScriptableObject
+public class QuestionScriptableObject : ScriptableObject
 {
     [TextArea(2, 6)] [SerializeField] private string question = "Enter new question here";
     [TextArea(2, 6)] [SerializeField] private string[] answers = new string[4];
