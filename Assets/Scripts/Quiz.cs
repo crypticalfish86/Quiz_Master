@@ -33,17 +33,21 @@ public class Quiz : MonoBehaviour
     //processes answer selection
     public void OnAnswerSelected(int index){
 
+        Image buttonImage; //button image put up here for performance
+
         //if correct answer is clicked, then will inform player its correct, otherwise gives the player the correct answer
         if (index == correctAnswerIndex){
             questionText.text = "Correct!";
-            Image buttonImage = answerButtons[index].GetComponent<Image>();
+            buttonImage = answerButtons[index].GetComponent<Image>();
             buttonImage.sprite = correctAnswerButtonSprite;
+            buttonImage.color = new Color (255, 209, 148, 255);
         }
         else{
-            string questionBoxRevalingcorrectAnswer = "Incorrect, correct answer was: " + question.GetAnswer(question.GetCorrectAnswerIndex());
+            string questionBoxRevalingcorrectAnswer = "Incorrect, correct answer was:\n" + question.GetAnswer(correctAnswerIndex);
             questionText.text = questionBoxRevalingcorrectAnswer;
-            Image buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
+            buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerButtonSprite;
+            buttonImage.color = new Color (255, 209, 148, 255);
         }
     }
 }
