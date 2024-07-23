@@ -21,12 +21,7 @@ public class Quiz : MonoBehaviour
 
         questionText.text = question.GetQuestion();
         correctAnswerIndex = question.GetCorrectAnswerIndex();
-
-        //goes through all button objects, finds the first textmeshpro child component and prints the question answer at that array index on that button
-        for (int i = 0; i < answerButtons.Length; i++){
-            TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
-            buttonText.text = question.GetAnswer(i);
-        }
+        FillAnswerButtons(question);
 
     }
 
@@ -48,6 +43,14 @@ public class Quiz : MonoBehaviour
             buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerButtonSprite;
             buttonImage.color = new Color (255, 209, 148, 255);
+        }
+    }
+
+    //goes through all button objects, finds the first textmeshpro child component and prints the question answer at that array index on that button
+    private void FillAnswerButtons(QuestionScriptableObject question){
+        for (int i = 0; i < answerButtons.Length; i++){
+            TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+            buttonText.text = question.GetAnswer(i);
         }
     }
 }
