@@ -19,10 +19,8 @@ public class Quiz : MonoBehaviour
 
     private void Start(){
 
-        questionText.text = question.GetQuestion();
-        correctAnswerIndex = question.GetCorrectAnswerIndex();
+        FillQuestionBox();
         FillAnswerButtons(question);
-
     }
 
     //processes answer selection
@@ -44,6 +42,40 @@ public class Quiz : MonoBehaviour
             buttonImage.sprite = correctAnswerButtonSprite;
             buttonImage.color = new Color (255, 209, 148, 255);
         }
+
+        SetButtonState(false);
+    }
+
+    //Get the next question after finishing the previous question(feature currently unavailable/untested)
+    private void GetNextQuestion(){
+        SetButtonState(true);
+        ResetButtonSprites();
+        FillQuestionBox();
+    }
+    
+    //switches the buttons on or off depending on the state passed in
+    private void SetButtonState(bool state){
+        for (int i = 0; i < answerButtons.Length; i++){
+            Button button = answerButtons[i].GetComponent<Button>();
+            button.interactable = state;
+        }
+    }
+
+    //resets button sprites back to default sprite
+    private void ResetButtonSprites(){
+        Image buttonImage; //button image initalised here for performance
+
+        //resets all buttons to the default sprite
+        for (int i = 0; i < answerButtons.Length; i++){
+            buttonImage = answerButtons[i].GetComponent<Image>();
+            buttonImage.sprite = defaultAnswerButtonSprite;
+        }
+    }
+
+    //Fills the question box with a question
+    private void FillQuestionBox(){
+        questionText.text = question.GetQuestion();
+        correctAnswerIndex = question.GetCorrectAnswerIndex();
     }
 
     //goes through all button objects, finds the first textmeshpro child component and prints the question answer at that array index on that button
@@ -53,4 +85,6 @@ public class Quiz : MonoBehaviour
             buttonText.text = question.GetAnswer(i);
         }
     }
+
+
 }
