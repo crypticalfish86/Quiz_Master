@@ -2036,7 +2036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeForQuestionGiven: 30
-  timeForAnswerViewing: 10
+  timeForAnswerViewing: 5
   playerAnsweringQuestion: 0
   fillFraction: 1
   loadNextQuestion: 0
