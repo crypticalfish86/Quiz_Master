@@ -10,9 +10,11 @@ public class Quiz : MonoBehaviour
     //QuestionScriptableObject
     [Header("QuestionSO")]
     [SerializeField] TextMeshProUGUI questionText;
-    [SerializeField] QuestionScriptableObject question;
+    [SerializeField] List<QuestionScriptableObject> questions = new List<QuestionScriptableObject>();
+    QuestionScriptableObject currentQuestion;
     [SerializeField] GameObject[] answerButtons = new GameObject[4];
     int correctAnswerIndex;
+    bool hasAnsweredEarly;
 
     //Sprites
     [Header("Sprites")]
@@ -27,16 +29,31 @@ public class Quiz : MonoBehaviour
     private void Start(){
         timer = FindObjectOfType<Timer>();//finds timer script
         FillQuestionBox();
-        FillAnswerButtons(question);
+        FillAnswerButtons(currentQuestion);
     }
 
     private void Update(){
         timerImage.fillAmount = timer.fillFraction;
+        if (timer.loadNextQuestion){
+            hasAnsweredEarly = false;
+            GetNextQuestion();
+            timer.loadNextQuestion = false;
+        }
+        else if (!hasAnsweredEarly && !timer.playerAnsweringQuestion){
+            DisplayAnswer(-1);
+            SetButtonState(false);
+        }
     }
 
     //processes answer selection
     public void OnAnswerSelected(int index){
+        hasAnsweredEarly = true;
+        DisplayAnswer(index);
+        SetButtonState(false);
+        timer.CancelTimer();
+    }
 
+    private void DisplayAnswer(int index) {
         Image buttonImage; //button image put up here for performance
 
         //if correct answer is clicked, then will inform player its correct, otherwise gives the player the correct answer
@@ -47,21 +64,32 @@ public class Quiz : MonoBehaviour
             buttonImage.color = new Color (255, 209, 148, 255);
         }
         else{
-            string questionBoxRevalingcorrectAnswer = "Incorrect, correct answer was:\n" + question.GetAnswer(correctAnswerIndex);
+            string questionBoxRevalingcorrectAnswer = "Incorrect, correct answer was:\n" + currentQuestion.GetAnswer(correctAnswerIndex);
             questionText.text = questionBoxRevalingcorrectAnswer;
             buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerButtonSprite;
             buttonImage.color = new Color (255, 209, 148, 255);
         }
-
-        SetButtonState(false);
     }
 
     //Get the next question after finishing the previous question(feature currently unavailable/untested)
     private void GetNextQuestion(){
-        SetButtonState(true);
-        ResetButtonSprites();
-        FillQuestionBox();
+        if(questions.Count > 0){
+            SetButtonState(true);
+            ResetButtonSprites();
+            GetRandomQuestion();
+            FillQuestionBox();
+        }
+    }
+
+    private void GetRandomQuestion(){
+        int index = Random.Range(0, questions.Count);
+        currentQuestion = questions[index];
+        FillAnswerButtons(currentQuestion);
+
+        if (questions.Contains(currentQuestion)) {
+            questions.Remove(currentQuestion);
+        }
     }
     
     //switches the buttons on or off depending on the state passed in
@@ -86,8 +114,8 @@ public class Quiz : MonoBehaviour
     //Fills the question box with a question
     private void FillQuestionBox(){
         SetButtonState(true);
-        questionText.text = question.GetQuestion();
-        correctAnswerIndex = question.GetCorrectAnswerIndex();
+        questionText.text = currentQuestion.GetQuestion();
+        correctAnswerIndex = currentQuestion.GetCorrectAnswerIndex();
     }
 
     //goes through all button objects, finds the first textmeshpro child component and prints the question answer at that array index on that button
