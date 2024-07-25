@@ -74,6 +74,7 @@ public class Quiz : MonoBehaviour
 
     //Fills the question box with a question
     private void FillQuestionBox(){
+        SetButtonState(true);
         questionText.text = question.GetQuestion();
         correctAnswerIndex = question.GetCorrectAnswerIndex();
     }
