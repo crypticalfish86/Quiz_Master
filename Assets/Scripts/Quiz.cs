@@ -8,19 +8,30 @@ public class Quiz : MonoBehaviour
 {
 
     //QuestionScriptableObject
+    [Header("QuestionSO")]
     [SerializeField] TextMeshProUGUI questionText;
     [SerializeField] QuestionScriptableObject question;
     [SerializeField] GameObject[] answerButtons = new GameObject[4];
     int correctAnswerIndex;
 
     //Sprites
+    [Header("Sprites")]
     [SerializeField] Sprite defaultAnswerButtonSprite;
     [SerializeField] Sprite correctAnswerButtonSprite;
 
-    private void Start(){
+    //timer
+    [Header("Timer")]
+    [SerializeField] Image timerImage;
+    Timer timer;
 
+    private void Start(){
+        timer = FindObjectOfType<Timer>();//finds timer script
         FillQuestionBox();
         FillAnswerButtons(question);
+    }
+
+    private void Update(){
+        timerImage.fillAmount = timer.fillFraction;
     }
 
     //processes answer selection
